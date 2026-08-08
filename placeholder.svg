@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#161616"/>
+      <stop offset="1" stop-color="#0B0B0B"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0d978"/>
+      <stop offset=".5" stop-color="#D4AF37"/>
+      <stop offset="1" stop-color="#a8862a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".45" r=".6">
+      <stop offset="0" stop-color="#D4AF37" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#D4AF37" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#glow)"/>
+  <g stroke="url(#gold)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+    <path d="M160 360c0-52 34-90 96-104 18-54 52-82 94-86 40 4 74 34 92 88 50 10 84 42 96 92 18-4 32-2 42 8"/>
+    <path d="M160 360h30c6 22 20 36 40 36 22 0 36-14 42-36h176c6 22 20 36 42 36 20 0 34-14 40-36h30l-22-44c-8-14-24-22-42-22H252c-34 0-62 22-72 54z"/>
+    <circle cx="272" cy="398" r="9"/>
+    <circle cx="536" cy="398" r="9"/>
+    <path d="M272 424h272M320 196l22 14M440 198l-16 16"/>
+  </g>
+  <text x="400" y="480" font-family="Georgia, serif" font-size="30" letter-spacing="10" text-anchor="middle" fill="url(#gold)">OLMAK</text>
+  <text x="400" y="510" font-family="Arial, sans-serif" font-size="12" letter-spacing="6" text-anchor="middle" fill="#ffffff" opacity=".55">LUXURY CARS · ABUJA</text>
+</svg>
