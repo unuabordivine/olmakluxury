@@ -115,6 +115,8 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + 10px);
   -webkit-text-size-adjust: 100%;
+  /* Kill horizontal page scroll on mobile (iOS needs this on <html>, not just <body>) */
+  overflow-x: hidden;
 }
 
 body {
@@ -128,7 +130,14 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+/* Modern browsers: clip instead of hidden — prevents any horizontal pan/bounce
+   without creating a scroll container. (Fallback above remains overflow-x: hidden.) */
+@supports (overflow-x: clip) {
+  html, body { overflow-x: clip; }
+}
+
 img { display: block; max-width: 100%; }
+iframe { max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 ul { list-style: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
@@ -649,6 +658,7 @@ html.js .preloader { display: grid; }
   gap: clamp(40px, 6vw, 80px);
   align-items: center;
 }
+.about-grid > * { min-width: 0; } /* let grid children shrink below content width */
 
 .about-media { position: relative; }
 
@@ -664,6 +674,14 @@ html.js .preloader { display: grid; }
   background: linear-gradient(200deg, transparent 45%, rgba(11, 11, 11, 0.65));
 }
 .about-img-frame img { width: 100%; height: clamp(360px, 44vw, 520px); object-fit: cover; transition: transform 0.8s var(--ease); }
+/* Crossfade layer — the next photo fades in over the base image (opacity driven by JS) */
+.about-img-frame img.about-img-layer {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: transform 0.8s var(--ease), opacity 0.6s ease;
+}
 .about-media:hover .about-img-frame img { transform: scale(1.05); }
 
 .about-img-frame::before {
@@ -892,6 +910,7 @@ html.js .preloader { display: grid; }
 }
 
 .contact-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(30px, 5vw, 56px); align-items: start; }
+.contact-grid > * { min-width: 0; }
 
 .info-card {
   display: flex; align-items: flex-start; gap: 18px;
@@ -1158,6 +1177,7 @@ html.js .preloader { display: grid; }
   .form-row { grid-template-columns: 1fr; }
   .cta-bg { background-attachment: scroll; }
   .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-img-frame::before { display: none; } /* decorative corner would poke past the viewport */
 }
 
 @media (max-width: 480px) {
@@ -1165,6 +1185,8 @@ html.js .preloader { display: grid; }
   .hero-stats strong { font-size: 1.4rem; }
   .about-badge { padding: 14px 18px; }
   .about-badge strong { font-size: 1.9rem; }
+  /* Keep the hero headline inside narrow screens — "Own Excellence." was bleeding off the edge */
+  .hero-title { font-size: clamp(2.3rem, 10vw, 2.9rem); }
 }
 
 @media (max-width: 400px) {

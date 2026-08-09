@@ -263,6 +263,84 @@
     });
   }
 
+  /* ---------- 9b. About gallery — crossfade the showroom photo every 4s ---------- */
+  const aboutImg = $('#aboutImg');
+  if (aboutImg && typeof ABOUT_GALLERY !== 'undefined' && ABOUT_GALLERY.length > 1) {
+    /* Preload every image up-front so rotations are instant */
+    ABOUT_GALLERY.forEach((item) => {
+      const pre = new Image();
+      pre.src = item.src;
+    });
+
+    /* Shuffle once per page load so each visit shows a fresh order */
+    const order = ABOUT_GALLERY.slice();
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = order[i]; order[i] = order[j]; order[j] = t;
+    }
+
+    const setImage = (img, item) => {
+      img.onerror = function () { this.onerror = null; this.src = FALLBACK_IMG; };
+      img.src = item.src;
+      img.alt = item.alt;
+    };
+
+    const reduceGalleryMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* A stacked layer fades in over the base <img> for a true crossfade */
+    let layer = null;
+    if (!reduceGalleryMotion) {
+      layer = document.createElement('img');
+      layer.className = 'about-img-layer';
+      layer.setAttribute('aria-hidden', 'true');
+      layer.alt = '';
+      aboutImg.parentNode.appendChild(layer);
+    }
+
+    const FADE_IN_MS = 700; /* must stay ≥ the .about-img-layer opacity transition (0.6s) */
+    let index = 0;
+    let swapping = false;
+    const advance = () => {
+      if (swapping) return;
+      index = (index + 1) % order.length;
+      const item = order[index];
+      if (reduceGalleryMotion) {
+        setImage(aboutImg, item);
+        return;
+      }
+      swapping = true;
+      layer.onerror = function () { this.onerror = null; this.src = FALLBACK_IMG; };
+      layer.src = item.src;
+      const fadeIn = () => {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          layer.style.opacity = '1'; /* fade the next photo in over the current one */
+        }));
+      };
+      /* Only fade once the photo is actually painted — avoids a blank-then-pop */
+      if (layer.complete) fadeIn();
+      else {
+        layer.addEventListener('load', fadeIn, { once: true });
+        layer.addEventListener('error', fadeIn, { once: true });
+      }
+      setTimeout(() => {
+        setImage(aboutImg, item);  /* promote the top layer into the base <img> */
+        layer.style.opacity = '0'; /* layer is now hidden behind an identical photo */
+        swapping = false;
+      }, FADE_IN_MS);
+    };
+
+    /* Only rotate while the About image is actually on screen (and the tab is visible) */
+    let inView = true;
+    const view = new IntersectionObserver((entries) => {
+      inView = entries[0].isIntersecting;
+    }, { threshold: 0.05 });
+    view.observe(aboutImg);
+
+    setInterval(() => {
+      if (inView && !document.hidden) advance();
+    }, 4000);
+  }
+
   /* ---------- 10. Footer Year ---------- */
   const yearEl = $('#year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
