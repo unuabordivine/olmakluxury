@@ -352,7 +352,7 @@ html.js .preloader { display: grid; }
 
 .nav-inner { display: flex; align-items: center; gap: 28px; width: min(1200px, 92%); }
 
-.nav-logo { display: inline-flex; align-items: center; flex-shrink: 0; }
+.nav-logo { display: inline-flex; align-items: center; flex-shrink: 0; gap: 12px; }
 
 .nav-logo-img {
   display: block;
@@ -363,6 +363,23 @@ html.js .preloader { display: grid; }
   transition: transform 0.4s var(--ease);
 }
 .nav-logo:hover .nav-logo-img { transform: scale(1.05); }
+
+.nav-logo-text {
+  display: flex; flex-direction: column; justify-content: center;
+  line-height: 1.08;
+}
+.nav-logo-text strong {
+  font-family: var(--font-serif);
+  font-size: 1.08rem; font-weight: 700; letter-spacing: 0.14em;
+  color: var(--white);
+  text-transform: uppercase;
+}
+.nav-logo-text small {
+  font-size: 0.56rem; font-weight: 600; letter-spacing: 0.42em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
 
 .nav-links { display: flex; align-items: center; gap: clamp(14px, 2vw, 30px); margin-left: auto; }
 
@@ -1044,6 +1061,8 @@ html.js .preloader { display: grid; }
 
 .footer-brand p { color: var(--text-muted); font-size: 0.9rem; margin: 20px 0 24px; max-width: 320px; }
 .footer .nav-logo-img { height: 56px; }
+.footer .nav-logo-text strong { color: var(--ink); text-shadow: none; }
+.footer .nav-logo-text small { font-size: 0.62rem; }
 
 .socials { display: flex; gap: 12px; }
 .socials a {
