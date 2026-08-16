@@ -26,7 +26,7 @@
   const applyTheme = (theme, persist) => {
     document.documentElement.setAttribute('data-theme', theme);
     if (themeToggle) themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
-    if (themeMeta) themeMeta.setAttribute('content', theme === 'dark' ? '#0D0E12' : '#F1F2F4');
+    if (themeMeta) themeMeta.setAttribute('content', theme === 'dark' ? '#0A0A0A' : '#F4F4F2');
     if (persist) {
       try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* private mode etc. */ }
     }
